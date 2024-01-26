@@ -4,10 +4,18 @@ type Book = {
     title: string;
     pages: number;
     author: string;
+    borrowed?: string;
+    rating?: number;
+}
+
+type Rating = {
+    title: string;
+    rating: number;
 }
 
 export class LibaryManager {
     private books: Book[] = [];
+    private ratings: Rating[] = [];
 
     public addBook(book: Book): void {
         if(this.books.find(b => b.title === book.title))
@@ -60,4 +68,55 @@ export class LibaryManager {
                 return book.title = newTitle
         })
     }
+
+    public borrowBook(title: string): void {
+        let book = this.books.find(b => b.title === title);
+        if(!book)
+            throw new Error('Book not found');
+
+        if(book.borrowed === 'not available')
+            throw new Error('Book already borrowed');
+
+        this.books.map(function (book) {
+            if(book.title === title)
+                return book.borrowed = 'not available'
+        })
+    }
+
+    public returnBook(title: string, rating?: number): void {
+        let book = this.books.find(b => b.title === title);
+        if(!book)
+            throw new Error('Book not found');
+
+        if(book.borrowed === 'available')
+            throw new Error('Book already available');
+
+        if(rating) {
+            this.ratings.push({title: title, rating: rating})
+            this.setRating(title)
+        }
+
+        this.books.map(function (book) {
+            if(book.title === title)
+                return book.borrowed = 'available'
+        })
+    }
+
+    private setRating(title: string): void {
+        let rating = this.ratings.filter(r => r.title === title);
+        let sum = 0;
+
+        rating.forEach(function (r) {
+            sum += r.rating;
+        })
+
+        let avg = sum / rating.length;
+
+        this.books.map(function (book) {
+            if(book.title === title)
+                return book.rating = avg
+        })
+    }
+
+
 }

@@ -5,8 +5,8 @@ describe('LibaryManager', () => {
 
     beforeEach(() => {
         libaryManager = new LibaryManager();
-        libaryManager.addBook({title: 'Book 1', pages: 100, author: 'Author 1'});
-        libaryManager.addBook({title: 'Book 2', pages: 150, author: 'Author 2'});
+        libaryManager.addBook({title: 'Book 1', pages: 100, author: 'Author 1', borrowed: 'available'});
+        libaryManager.addBook({title: 'Book 2', pages: 150, author: 'Author 2', borrowed: 'available'});
     });
 
     it('can add a book', () => {
@@ -76,4 +76,63 @@ describe('LibaryManager', () => {
 
         expect(libaryManager.findBookByTitle('NewTitle').author).toBe('Author 1');
     })
+
+    it('can borrow a book', () => {
+        libaryManager.borrowBook('Book 1');
+
+        expect(libaryManager.findBookByTitle('Book 1').borrowed).toBe('not available');
+    });
+
+    it('cannot borrow a book because book doesnt exist', () => {
+        const book = () => libaryManager.borrowBook('Book 3');
+
+        expect(book).toThrow('Book not found');
+    });
+
+    it('cannot borrow a book because book already borrowed', () => {
+        libaryManager.borrowBook('Book 1');
+        const book = () => libaryManager.borrowBook('Book 1');
+
+        expect(book).toThrow('Book already borrowed');
+    });
+
+    it('can return a book', () => {
+        libaryManager.borrowBook('Book 1');
+        libaryManager.returnBook('Book 1');
+
+        expect(libaryManager.findBookByTitle('Book 1').borrowed).toBe('available');
+    });
+
+    it('cannot return a book because book doesnt exist', () => {
+        const book = () => libaryManager.returnBook('Book 3');
+
+        expect(book).toThrow('Book not found');
+    });
+
+    it('cannot return a book because book already available', () => {
+        const book = () => libaryManager.returnBook('Book 1');
+
+        expect(book).toThrow('Book already available');
+    });
+
+    it('can rate a book when return book', () => {
+        libaryManager.borrowBook('Book 1');
+        libaryManager.returnBook('Book 1', 5);
+
+        expect(libaryManager.findBookByTitle('Book 1').rating).toBe(5);
+    })
+
+    it('can get avg for one book', () => {
+        libaryManager.borrowBook('Book 1');
+        libaryManager.returnBook('Book 1', 5);
+
+        libaryManager.borrowBook('Book 1');
+        libaryManager.returnBook('Book 1', 10);
+
+        libaryManager.borrowBook('Book 1');
+        libaryManager.returnBook('Book 1', 9);
+
+        expect(libaryManager.findBookByTitle('Book 1').rating).toBe(8);
+    })
+
 });
