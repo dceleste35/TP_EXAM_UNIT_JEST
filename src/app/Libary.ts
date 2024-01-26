@@ -106,10 +106,12 @@ export class LibaryManager {
         let mostPopular = this.books[0]
         this.books.forEach(function (book) {
                 if(book.rating)
-                    if(mostPopular.rating)
+                    if(mostPopular.rating) {
                         if(book.rating > mostPopular.rating)
                             mostPopular = book
-                    mostPopular = book
+                    } else {
+                        mostPopular = book
+                    }
         })
 
         return mostPopular
