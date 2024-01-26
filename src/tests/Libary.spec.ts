@@ -135,4 +135,23 @@ describe('LibaryManager', () => {
         expect(libaryManager.findBookByTitle('Book 1').rating).toBe(8);
     })
 
+    it('can get the most popular book', () => {
+        libaryManager.borrowBook('Book 1');
+        libaryManager.returnBook('Book 1', 5);
+
+        libaryManager.borrowBook('Book 1');
+        libaryManager.returnBook('Book 1', 10);
+
+        libaryManager.borrowBook('Book 1');
+        libaryManager.returnBook('Book 1', 10);
+
+        libaryManager.borrowBook('Book 2');
+        libaryManager.returnBook('Book 2', 8);
+
+        libaryManager.borrowBook('Book 2');
+        libaryManager.returnBook('Book 2', 7);
+
+        expect(libaryManager.getMostPopularBook().title).toBe('Book 1');
+    })
+
 });

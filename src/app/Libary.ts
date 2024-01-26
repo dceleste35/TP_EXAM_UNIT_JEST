@@ -102,6 +102,19 @@ export class LibaryManager {
         })
     }
 
+    public getMostPopularBook(): Book {
+        let mostPopular = this.books[0]
+        this.books.forEach(function (book) {
+                if(book.rating)
+                    if(mostPopular.rating)
+                        if(book.rating > mostPopular.rating)
+                            mostPopular = book
+                    mostPopular = book
+        })
+
+        return mostPopular
+    }
+
     private setRating(title: string): void {
         let rating = this.ratings.filter(r => r.title === title);
         let sum = 0;
