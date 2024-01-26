@@ -72,8 +72,8 @@ describe('LibaryManager', () => {
     });
 
     it('can update title of an existing book', () => {
-        libaryManager.updateTitleBook('Book 3');
+        libaryManager.updateTitleBook('Book 1', 'NewTitle');
 
-        expect(libaryManager.findBookByTitle('Book 3').author).toBe('Author 1');
+        expect(libaryManager.findBookByTitle('NewTitle').author).toBe('Author 1');
     })
 });

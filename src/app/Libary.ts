@@ -54,9 +54,10 @@ export class LibaryManager {
         this.books = this.books.filter(b => b.author !== author);
     }
 
-    public updateTitleBook(title: string): void {
-        let b = this.books.find(b => b.title === title)
-
-
+    public updateTitleBook(oldTitle: string, newTitle: string): void {
+        this.books.map(function (book) {
+            if(book.title === oldTitle)
+                return book.title = newTitle
+        })
     }
 }
