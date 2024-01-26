@@ -57,8 +57,6 @@ export class LibaryManager {
     public updateTitleBook(title: string): void {
         let b = this.books.find(b => b.title === title)
 
-        this.books.map(function (book) {
 
-        })
     }
 }
